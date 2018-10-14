@@ -1,0 +1,24 @@
+﻿@model KuvarBlog.Models.Makaleler
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <b>Kategori Adı : </b>@Model.Kategoriler.KategoriAd<br />
+    <span class="fas fa-clock"> @string.Format("{0:dd MMMMMMM yyyy}", Model.Tarih)</span>
+    <center>
+        <img src="@Model.Foto" width="600" height="300" />
+        <ul class="list-group">
+            <li class="list-group-item">
+                <h3>@Model.Baslik</h3>
+            </li>
+            <li class="list-group-item">
+                <b>İçerik</b><br />
+                @Html.Raw(Model.İcerik)
+            </li>
+        </ul>
+    </center>
+
+
+</div>
+

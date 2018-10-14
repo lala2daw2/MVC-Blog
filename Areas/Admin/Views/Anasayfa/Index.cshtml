@@ -1,0 +1,40 @@
+﻿@model IEnumerable<KuvarBlog.Models.Kullanicilar>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fas fa-table"></i>
+        Kullanıcılar
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Kullanıcı Adı</th>
+                        <th>Şifre</th>
+                        <th>Mail</th>
+                        <th>Adı ve Soyad</th>
+                        <th>Yetkilendir</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.KullaniciAdi</td>
+                            <td>@item.Sifre</td>
+                            <td>@item.Mail</td>
+                            <td>@item.Adsoyad</td>
+                            <td>@Html.ActionLink("Yetkilendir","Yetki","Anasayfa",new {id=item.ID,name=item.KullaniciAdi },new {@class="btn btn-primary" })</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>

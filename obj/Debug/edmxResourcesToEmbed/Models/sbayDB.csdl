@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="sbayDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Kategoriler">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="KategoriAd" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Makalelers" Relationship="Self.FK_Makaleler_Kategoriler" FromRole="Kategoriler" ToRole="Makaleler" />
+  </EntityType>
+  <EntityType Name="Kullanicilar">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="KullaniciAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Sifre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Adsoyad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="YetkiID" Type="Int32" />
+    <Property Name="Foto" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
+    <Property Name="Mail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Yetkiler" Relationship="Self.FK_Kullanicilar_Yetkiler" FromRole="Kullanicilar" ToRole="Yetkiler" />
+    <NavigationProperty Name="Makalelers" Relationship="Self.FK_Makaleler_Kullanicilar" FromRole="Kullanicilar" ToRole="Makaleler" />
+    <NavigationProperty Name="Yorumlars" Relationship="Self.FK_Yorumlar_Kullanicilar" FromRole="Kullanicilar" ToRole="Yorumlar" />
+  </EntityType>
+  <EntityType Name="Makaleler">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="KullaniciID" Type="Int32" />
+    <Property Name="KategoriID" Type="Int32" />
+    <Property Name="Baslik" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="İcerik" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Foto" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Tarih" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="Kategoriler" Relationship="Self.FK_Makaleler_Kategoriler" FromRole="Makaleler" ToRole="Kategoriler" />
+    <NavigationProperty Name="Kullanicilar" Relationship="Self.FK_Makaleler_Kullanicilar" FromRole="Makaleler" ToRole="Kullanicilar" />
+    <NavigationProperty Name="Yorumlars" Relationship="Self.FK_Yorumlar_Makaleler" FromRole="Makaleler" ToRole="Yorumlar" />
+  </EntityType>
+  <EntityType Name="Yetkiler">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="YetkiAd" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Kullanicilars" Relationship="Self.FK_Kullanicilar_Yetkiler" FromRole="Yetkiler" ToRole="Kullanicilar" />
+  </EntityType>
+  <EntityType Name="Yorumlar">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="KullaniciID" Type="Int32" />
+    <Property Name="MakaleID" Type="Int32" />
+    <Property Name="Tarih" Type="DateTime" Precision="0" />
+    <Property Name="Yorum" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Kullanicilar" Relationship="Self.FK_Yorumlar_Kullanicilar" FromRole="Yorumlar" ToRole="Kullanicilar" />
+    <NavigationProperty Name="Makaleler" Relationship="Self.FK_Yorumlar_Makaleler" FromRole="Yorumlar" ToRole="Makaleler" />
+  </EntityType>
+  <Association Name="FK_Makaleler_Kategoriler">
+    <End Role="Kategoriler" Type="Self.Kategoriler" Multiplicity="0..1" />
+    <End Role="Makaleler" Type="Self.Makaleler" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kategoriler">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Makaleler">
+        <PropertyRef Name="KategoriID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Kullanicilar_Yetkiler">
+    <End Role="Yetkiler" Type="Self.Yetkiler" Multiplicity="0..1" />
+    <End Role="Kullanicilar" Type="Self.Kullanicilar" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Yetkiler">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Kullanicilar">
+        <PropertyRef Name="YetkiID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Makaleler_Kullanicilar">
+    <End Role="Kullanicilar" Type="Self.Kullanicilar" Multiplicity="0..1" />
+    <End Role="Makaleler" Type="Self.Makaleler" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kullanicilar">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Makaleler">
+        <PropertyRef Name="KullaniciID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Yorumlar_Kullanicilar">
+    <End Role="Kullanicilar" Type="Self.Kullanicilar" Multiplicity="0..1" />
+    <End Role="Yorumlar" Type="Self.Yorumlar" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kullanicilar">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Yorumlar">
+        <PropertyRef Name="KullaniciID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Yorumlar_Makaleler">
+    <End Role="Makaleler" Type="Self.Makaleler" Multiplicity="0..1" />
+    <End Role="Yorumlar" Type="Self.Yorumlar" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Makaleler">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Yorumlar">
+        <PropertyRef Name="MakaleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="sbayDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Kategorilers" EntityType="Self.Kategoriler" />
+    <EntitySet Name="Kullanicilars" EntityType="Self.Kullanicilar" />
+    <EntitySet Name="Makalelers" EntityType="Self.Makaleler" />
+    <EntitySet Name="Yetkilers" EntityType="Self.Yetkiler" />
+    <EntitySet Name="Yorumlars" EntityType="Self.Yorumlar" />
+    <AssociationSet Name="FK_Makaleler_Kategoriler" Association="Self.FK_Makaleler_Kategoriler">
+      <End Role="Kategoriler" EntitySet="Kategorilers" />
+      <End Role="Makaleler" EntitySet="Makalelers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Kullanicilar_Yetkiler" Association="Self.FK_Kullanicilar_Yetkiler">
+      <End Role="Yetkiler" EntitySet="Yetkilers" />
+      <End Role="Kullanicilar" EntitySet="Kullanicilars" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Makaleler_Kullanicilar" Association="Self.FK_Makaleler_Kullanicilar">
+      <End Role="Kullanicilar" EntitySet="Kullanicilars" />
+      <End Role="Makaleler" EntitySet="Makalelers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Yorumlar_Kullanicilar" Association="Self.FK_Yorumlar_Kullanicilar">
+      <End Role="Kullanicilar" EntitySet="Kullanicilars" />
+      <End Role="Yorumlar" EntitySet="Yorumlars" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Yorumlar_Makaleler" Association="Self.FK_Yorumlar_Makaleler">
+      <End Role="Makaleler" EntitySet="Makalelers" />
+      <End Role="Yorumlar" EntitySet="Yorumlars" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

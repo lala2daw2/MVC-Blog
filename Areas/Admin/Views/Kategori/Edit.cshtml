@@ -1,0 +1,18 @@
+﻿@model KuvarBlog.Models.Kategoriler
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <h2>@Model.KategoriAd</h2>
+    @using (Html.BeginForm("Edit", "Kategori", FormMethod.Post))
+    {
+        @Html.ValidationSummary()
+        <div class="form-group">
+            @Html.TextBoxFor(x => x.KategoriAd, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x=>x.KategoriAd)
+        </div>
+        <button type="submit" class="btn btn-success">Kaydet</button>
+    }
+</div>
+

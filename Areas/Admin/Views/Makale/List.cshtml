@@ -1,0 +1,66 @@
+﻿@model IEnumerable<KuvarBlog.Models.Makaleler>
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <h2>Makale Listesi</h2>
+    @Html.ActionLink("Yeni Makale", "Create", "Makale", new { @class = "btn btn-info" })
+    <br /><br />
+    <table class="table table-bordered table-hover" id="tblMak">
+        <thead>
+            <tr>
+                <th><span class="fas fa-image"></span></th>
+                <th>Başlık</th>
+                @* <th>İçerik</th>*@
+                <th>Kategori</th>
+                @*<th>Kullanıcı Adı</th>*@
+                <th>Tarih</th>
+                <th>Güncelle</th>
+                <th>Detay</th>
+                <th>Sil</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td width="43"><img src="@item.Foto" width="40" /></td>
+                    <td>@item.Baslik</td>
+                    @*<td>@(item.İcerik.Length>50?Html.Raw(item.İcerik.Substring(0,50)):Html.Raw(item.İcerik))</td>*@
+                    <td>@item.Kategoriler.KategoriAd</td>
+                    @*<td>@item.Kullanicilar.KullaniciAdi</td>*@
+                    <td>@string.Format("{0:dd MMMMMMM yyyy}", item.Tarih)</td>
+                    <td>@Html.ActionLink("Güncelle", "Update", "Makale", new { id = item.ID,title=item.Baslik }, new { @class = "btn" })</td>
+                    <td>@Html.ActionLink("Detay", "Detail", "Makale", new { id = item.ID,title=item.Baslik }, new { @class = "btn" })</td>
+                    <td><a class="btn btnMak" data-no="@item.ID">Sil</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script src="~/vendor/jquery/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#tblMak').on("click", ".btnMak", function () {
+            var btn = $(this);
+            var id = btn.data("no");
+            bootbox.confirm("Bu makaleyi silmek istiyor musunuz ?", function (result) {
+                if (result) {
+                    $.ajax({
+                        url: "/Admin/Makale/Delete/" + id,
+                        type: "POST",
+                        success: function () {
+                            btn.parent().parent().remove();
+                        },
+                        error: function () {
+                            alert("Silme işlemi başarısız.");
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+

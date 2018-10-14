@@ -1,0 +1,49 @@
+﻿@model IEnumerable<KuvarBlog.Models.Yorumlar>
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<h2>Yorum Listesi</h2>
+<table class="table table-bordered table-hover" id="tblYorum">
+    <thead>
+        <tr>
+            <th>Kullanıcı Adı</th>
+            <th>Başlık</th>
+            <th>Tarih</th>
+            <th>Yorum</th>
+            <th>Sil</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Kullanicilar.KullaniciAdi</td>
+                <td>@item.Makaleler.Baslik</td>
+                <td>@string.Format("{0:dd MMMMMM yyyy}",item.Tarih)</td>
+                <td>@Html.Raw(item.Yorum)</td>
+                <td><a class="btn btn-outline-danger btnYorum" data-id="@item.ID">Sil</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script src="~/vendor/jquery/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#tblYorum').on("click", ".btnYorum", function () {
+            var btn = $(this);
+            var id = btn.data("id");
+            $.ajax({
+                url: "/Admin/Yorum/Delete/" + id,
+                type: "POST",
+                success: function () {
+                    btn.parent().parent().remove();
+                },
+                error: function () {
+                    alert("Silme işlemi başarısız.");
+                }
+            });
+        });
+    });
+</script>
+

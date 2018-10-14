@@ -1,0 +1,12 @@
+﻿@model IEnumerable<KuvarBlog.Models.Yorumlar>
+@{ 
+    Layout = null;
+}
+<ul class="list-group">
+    @foreach (var item in Model)
+    {
+        <li class="list-group-item">
+            <b>@item.Kullanicilar.KullaniciAdi diyor ki : </b>@item.Yorum
+        </li>
+    }
+</ul>

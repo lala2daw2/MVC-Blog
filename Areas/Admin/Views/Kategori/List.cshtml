@@ -1,0 +1,54 @@
+﻿@model IEnumerable<KuvarBlog.Models.Kategoriler>
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <h2>Kategori Listesi</h2>
+    <hr />
+    @Html.ActionLink("Yeni Kategori", "Create", "Kategori", new { @class = "btn btn-info" })
+    <br /><br />
+    <table class="table table-bordered table-hover" id="tblCat">
+        <thead>
+            <tr>
+                <th>Kategori Adı</th>
+                <th>Güncelle</th>
+                <th>Sil</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.KategoriAd</td>
+                    <td>@Html.ActionLink("Güncelle", "Edit", "Kategori", new { id = item.ID,name=item.KategoriAd }, new { @class = "btn btn-primary" })</td>
+                    <td><a class="btn btn-danger btnCat" data-id="@item.ID">Sil</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script src="~/vendor/jquery/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#tblCat').on("click", ".btnCat", function () {
+            var btn = $(this);
+            var id = btn.data("id");
+            bootbox.confirm("Bu kategoriyi silmek istediğinize emin misin?", function (result) {
+                if (result) {
+                    $.ajax({
+                        url: "/Admin/Kategori/Delete/" + id,
+                        type: "POST",
+                        success: function () {
+                            btn.parent().parent().remove();
+                        },
+                        error: function () {
+                            alert("Silme işlemi başarısız.");
+                        }
+                    });
+                };
+            });
+        });
+    });
+</script>
+

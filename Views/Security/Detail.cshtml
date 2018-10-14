@@ -1,0 +1,33 @@
+﻿@model KuvarBlog.Models.ViewModel.KullaniciMakaleVM
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<center>
+    <ul class="list-group">
+        <li class="list-group-item">
+            <img width="100" src="@(Model.Kullanici.Foto!=null?Model.Kullanici.Foto:"http://placehold.it/50x50")" />  
+        </li>
+        <li class="list-group-item">
+           <b>Kullanıcı Adı : </b> @Model.Kullanici.KullaniciAdi
+        </li>
+        <li class="list-group-item">
+           <b>Ad ve Soyad : </b> @Model.Kullanici.Adsoyad
+        </li>
+        <li class="list-group-item">
+           <b>Mail Adresi : </b> @Model.Kullanici.Mail
+        </li>
+        <li class="list-group-item">
+            <b>Yayınladığı Makaleler </b>
+        </li>
+        @foreach (var item in Model.Makale)
+        {
+        <li class="list-group-item">
+            <b>Başlık</b>@Html.ActionLink(item.Baslik,"Detail","Home",new {id=item.ID,title=item.Baslik },new {@class="nav-link" })<b>Tarihi : </b>@string.Format("{0:dd MMMMMM yyyy}", item.Tarih)
+        </li>
+        }
+    </ul>
+</center>
+
+

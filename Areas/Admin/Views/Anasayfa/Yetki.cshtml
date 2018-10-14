@@ -1,0 +1,17 @@
+﻿@model KuvarBlog.Areas.Admin.ViewModel.UserRoleVM
+@{
+    ViewBag.Title = "Yetki";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Yetki", "Anasayfa", FormMethod.Post))
+{
+    <div class="form-group">
+        <h3>@Model.Kullanici.KullaniciAdi</h3>
+    </div>
+    <div class="form-group">
+        @Html.DropDownListFor(x => x.Kullanici.YetkiID, new SelectList(Model.Yetkiler, "ID", "YetkiAd"), new { @class = "form-control" })
+    </div>
+    <button type="submit" class="btn btn-success">Kaydet</button>
+}
+

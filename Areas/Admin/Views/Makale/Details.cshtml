@@ -1,0 +1,29 @@
+﻿@model KuvarBlog.Models.Makaleler
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <center>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <img  src="@Model.Foto" width="150"/>
+            </li>
+            <li class="list-group-item">
+                <h3>@Model.Baslik</h3>
+            </li>
+            <li class="list-group-item" style="height:400px">
+                <b>İçerik :</b> @Html.Raw(Model.İcerik)
+            </li>
+            @*<li class="list-group-item">
+                Kategori : @Model.Kategoriler.KategoriAd
+            </li>*@
+            <li class="list-group-item">
+                <b>Tarih :</b> @(Model.Tarih==null?System.DateTime.Now:Model.Tarih)
+            </li>
+        </ul>
+    </center>
+    <br />
+    @Html.ActionLink("Geri dön","List","Makale",new {@class="btn" })
+</div>
+

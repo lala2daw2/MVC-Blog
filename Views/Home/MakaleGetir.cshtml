@@ -1,0 +1,23 @@
+﻿@model IEnumerable<KuvarBlog.Models.Makaleler>
+@{
+    ViewBag.Title = "MakaleGetir";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+@foreach (var item in Model)
+{
+    <div class="card mb-4">
+        <img class="card-img-top" src="@item.Foto" width="750" height="300" alt="Card image cap">
+        <div class="card-body">
+            <h2 class="card-title">@item.Baslik</h2>
+            <p class="card-text"> @(item.İcerik.Length > 200 ? Html.Raw(item.İcerik.Substring(0, 200)) : Html.Raw(item.İcerik))...</p>
+            @Html.ActionLink("Devamını oku", "Detail", "Home", new { id = item.ID, title = item.Baslik }, new { @class = "btn btn-primary" })
+        </div>
+        <div class="card-footer text-muted">
+            @string.Format("{0:dd MMMMMMMM yyyy}", item.Tarih) by
+            @Html.ActionLink(item.Kullanicilar.KullaniciAdi, "Detail", "Security", new { id = item.KullaniciID, name = item.Kullanicilar.KullaniciAdi }, null)
+@*            <a href="/Security/Detail/@item.KullaniciID">@item.Kullanicilar.KullaniciAdi</a>*@
+        </div>
+    </div>
+}
+

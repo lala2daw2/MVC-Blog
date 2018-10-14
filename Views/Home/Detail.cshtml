@@ -1,0 +1,106 @@
+﻿@model KuvarBlog.Models.ViewModel.MakaleVM
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Title -->
+<h1 class="mt-4">@Model.Makale.Baslik</h1>
+
+<!-- Author -->
+@*<img src="@Model.Kullanicilar.Foto" class="figure-img" width="100" />*@
+<p class="lead">
+    by
+    @Html.ActionLink(Model.Makale.Kullanicilar.KullaniciAdi, "Detail", "Security", new { id = Model.Makale.KullaniciID, name = Model.Makale.Kullanicilar.KullaniciAdi }, null)
+@*    <a href="/Security/Detail/@Model.Makale.KullaniciID">@Model.Makale.Kullanicilar.KullaniciAdi</a>*@
+</p>
+<hr>
+<!-- Date/Time -->
+<span class="fas fa-clock"></span> @string.Format("{0:dd MMMMMMM yyyy}", Model.Makale.Tarih)
+<hr>
+<!-- Preview Image -->
+<img src="@Model.Makale.Foto" width="600" height="300" alt="@Model.Makale.Baslik">
+<hr>
+<!-- Post Content -->
+<p class="lead">@Html.Raw(Model.Makale.İcerik)</p>
+<!-- Comments Form -->
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="card my-4">
+        <h5 class="card-header">Yorum yap</h5>
+        <div class="card-body">
+            <div class="form-group">
+                <textarea id="txtYorum" class="form-control"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" id="btnYorum">Gönder</button>
+        </div>
+    </div>
+}
+else
+{
+    <div class="card my-4">
+        <br />
+        <center>
+            <h3><a class="btn btn-success" href="/Security/Create">Üye değilsenize üye olun.</a></h3><br />
+        </center>
+    </div>
+}
+    <script src="~/vendor/jquery/jquery.js"></script>
+<script src="~/vendor/jquery/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnYorum').click(function () {
+            var yorum = $('#txtYorum').val();
+            var mid =@Model.Makale.ID
+            $.ajax({
+                url: '/Home/YorumYap/',
+                data: { txtYorum: yorum, ID: mid },
+                type: 'POST',
+                dataType:'json',
+                success: function () {
+                   location.reload();
+                },
+                error: function () {
+                   alert("Yorum yapılamadı");
+                }
+            });
+        });
+        $('#btnDelete').click(function () {
+            var btn = $(this);
+            var id = btn.data("id");
+            var mid = @Model.Makale.ID
+                $.ajax({
+                    url: '/Home/Delete/',
+                    data: { ID: id, makaleID: mid },
+                    type: 'POST',
+                    success: function () {
+                        btn.parent().remove();
+                },
+                error: function () {
+                    alert("İşlem başarısız.");
+                }
+            });
+        });
+    });
+</script>
+@foreach (var item in Model.Yorumlar)
+{
+<div class="media mb-4" id="Comments">
+    <img class="d-flex mr-3 rounded-circle btn-group-sm" width="50" src="@(item.Kullanicilar.Foto != null ? item.Kullanicilar.Foto : "http://placehold.it/50x50")" alt="@item.Kullanicilar.Adsoyad">
+    <div class="media-body">
+        <h5 class="mt-0">@item.Kullanicilar.KullaniciAdi</h5>
+        @Html.Raw(item.Yorum)
+    </div>
+    @if(item.Kullanicilar.KullaniciAdi==User.Identity.Name)
+    {
+        <a class="btn btn-outline-danger" id="btnDelete" data-id="@item.ID">Sil</a>
+    }
+</div>
+    <hr />
+}
+
+
+
+
+
+

@@ -1,0 +1,18 @@
+﻿@{
+    Layout = null;
+}
+<br />
+<div class="card my-4 ">
+    <h5 class="card-header">Ara</h5>
+    <div class="card-body">
+        <div class="input-group">
+            @using (Html.BeginForm("Search", "Home", FormMethod.Post,new {@class="",action="/SBAYBlog/Sonuc" }))
+            {
+                @Html.TextBox("txtSearch", null, new { @class = "form-control", placeholder = "Ara..." })
+                <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="submit">Ara</button>
+                </span>
+            }
+        </div>
+    </div>
+</div>

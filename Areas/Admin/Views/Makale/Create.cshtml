@@ -1,0 +1,32 @@
+﻿@model KuvarBlog.Areas.Admin.ViewModel.MakaleVM
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <h2>Makaleni yaz.</h2>
+    @using (Html.BeginForm("Create", "Makale", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="form-group">
+            @Html.TextBoxFor(x => x.Makale.Baslik, new { @class = "form-control", placeholder = "Başlık" })
+            @Html.ValidationMessageFor(x => x.Makale.Baslik)
+        </div>
+        <div class="form-group ">
+            @Html.TextAreaFor(x => x.Makale.İcerik, 15, 3, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Makale.İcerik)
+        </div>
+        <div class="form-group">
+            @Html.DropDownListFor(x => x.Makale.KategoriID, new SelectList(Model.Kategorilers, "ID", "KategoriAd"), new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.TextBox("txtFoto", null, new { @class = "form-control", type = "file" })
+            @Html.ValidationMessage("Kategori")
+        </div>
+        <div class="alert-danger">
+            @Html.ValidationSummary()
+        </div>
+        <button type="submit" class="btn btn-success">Kaydet</button>
+
+    }
+</div>
+

@@ -1,0 +1,55 @@
+﻿@model KuvarBlog.Models.ViewModel.KullaniciMakaleVM
+@{
+    ViewBag.Title = "Profil";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+
+<div>
+    @Html.ActionLink("Güncelle", "Update", "Security", new { id = Model.Kullanici.ID,name=Model.Kullanici.KullaniciAdi}, new { @class = " btn btn-outline-primary" })
+</div>
+<center>
+    <h2>Hoşgeldin  @Model.Kullanici.KullaniciAdi</h2>
+
+    <br />
+    <ul class="list-group">
+        <li class="list-group-item">
+            <img src="@(Model.Kullanici.Foto!=null?Model.Kullanici.Foto:"http://placehold.it/50x50")" width="150" />
+        </li>
+        <li class="list-group-item">
+            <b>Kullanıcı Adı :</b>  @Model.Kullanici.KullaniciAdi
+        </li>
+        <li class="list-group-item">
+            <b>Şifre : </b> @Model.Kullanici.Sifre
+        </li>
+        <li class="list-group-item">
+            <b>Ad ve Soyad : </b> @Model.Kullanici.Adsoyad
+        </li>
+        <li class="list-group-item">
+            <b>Mail Adresi : </b>@Model.Kullanici.Mail
+        </li>
+    </ul>
+    <br />
+    <h4>Yazdığınız makaleler</h4>
+    <hr />
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Başlık</th>
+                <th>Kategori Adı</th>
+                <th>Tarih</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Makale)
+            {
+                <tr>
+                    <td><a href="/Home/Detail/@item.ID" >@item.Baslik</a></td>
+                    <td>@item.Kategoriler.KategoriAd</td>
+                    <td>@string.Format("{0:dd MMMMMM yyyy}",item.Tarih)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</center>
+
